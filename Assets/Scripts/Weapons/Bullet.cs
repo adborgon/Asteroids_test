@@ -10,19 +10,25 @@ public class Bullet : MonoBehaviour
     private void Start()
     {
         _rigidbody = GetComponent<Rigidbody2D>();
+        Shoot();
+    }
+
+    private void Shoot()
+    {
+        _rigidbody.AddForce(direction * GameConfiguration.bulletSpeed);
         Destroy(gameObject, GameConfiguration.bulletLifeTime);
-        //we use Coroutine instead Invoke because if the object is destroyed, the Coroutine is destroyed too.
-        //StartCoroutine(DestroyBullet());
     }
 
-    private void FixedUpdate()
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        _rigidbody.AddForce(direction * GameConfiguration.bulletAccel);
-    }
+        switch (collision.tag)
+        {
+            case "Asteroid":
+                Destroy(gameObject);
+                break;
 
-    private IEnumerator DestroyBullet()
-    {
-        yield return new WaitForSeconds(GameConfiguration.bulletLifeTime);
-        Destroy(gameObject);
+            default:
+                break;
+        }
     }
 }

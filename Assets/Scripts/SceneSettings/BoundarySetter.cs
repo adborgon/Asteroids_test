@@ -12,6 +12,8 @@ public class BoundarySetter : MonoBehaviour
     public Position boundaryPosition;
     public float offset;
 
+    public SpawnPointSetter pointSetter;
+
     private void Start()
     {
     }
@@ -19,7 +21,6 @@ public class BoundarySetter : MonoBehaviour
     private void Update()
     {
         //It will work even if you change the aspectRatio on Play, this should be in Start
-        Vector2 point;
         switch (boundaryPosition)
         {
             case Position.top:
@@ -42,6 +43,9 @@ public class BoundarySetter : MonoBehaviour
             default:
                 break;
         }
+        //Fix Camera -10 position
+        transform.position = new Vector3(transform.position.x, transform.position.y, 0);
+        pointSetter.SetPosition(this);
     }
 
     /// <summary>
@@ -56,7 +60,6 @@ public class BoundarySetter : MonoBehaviour
             case "Bullet":
                 col.transform.position = ReversePosition(boundaryPosition, col.transform); //CAMBIO cambiar por singleton si se decide
                 break;
-
             default:
                 break;
         }
