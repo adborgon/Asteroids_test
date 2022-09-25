@@ -14,10 +14,6 @@ public class BoundarySetter : MonoBehaviour
 
     public SpawnPointSetter pointSetter;
 
-    private void Start()
-    {
-    }
-
     private void Update()
     {
         //It will work even if you change the aspectRatio on Play, this should be in Start
@@ -58,8 +54,10 @@ public class BoundarySetter : MonoBehaviour
         {
             case "Player":
             case "Bullet":
-                col.transform.position = ReversePosition(boundaryPosition, col.transform); //CAMBIO cambiar por singleton si se decide
+            case "Enemy":
+                col.transform.position = ReversePosition(boundaryPosition, col.transform);
                 break;
+
             default:
                 break;
         }

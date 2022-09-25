@@ -43,22 +43,33 @@ public class AsteroidHandler : MonoBehaviour
                 collision.SendMessage("Beaten");
                 break;
 
+            case "Shield":
+                asteroid.health = 0;
+                CheckAsteroidStatus();
+                break;
+
             case "Bullet":
-                if (!_asteroidManager) return;
                 asteroid.health--;
-                if (asteroid.health <= 0)
-                {
-                    if (asteroid.size != Asteroid.Size.small)
-                    {
-                        InstantiateAsteroidAfterDestruction();
-                        InstantiateAsteroidAfterDestruction();
-                    }
-                    Destroy(gameObject);
-                }
+                CheckAsteroidStatus();
                 break;
 
             default:
                 break;
+        }
+    }
+
+    private void CheckAsteroidStatus()
+    {
+        if (!_asteroidManager) return;
+        if (asteroid.health <= 0)
+        {
+            if (asteroid.size != Asteroid.Size.small)
+            {
+                InstantiateAsteroidAfterDestruction();
+                InstantiateAsteroidAfterDestruction();
+            }
+            PlayerManager.playerManager.UpdateScore(100 * ((int)asteroid.size + 1));
+            Destroy(gameObject);
         }
     }
 

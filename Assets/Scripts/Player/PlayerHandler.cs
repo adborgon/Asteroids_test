@@ -11,6 +11,12 @@ public class PlayerHandler : MonoBehaviour
     //prefabs
     public GameObject bulletPrefab;
 
+    //shield
+
+    public GameObject shield;
+    private bool _activeShield = false;
+    private bool isShieldReady = true;
+
     public Transform bulletSpawnPoint;
 
     //player statistics
@@ -23,7 +29,6 @@ public class PlayerHandler : MonoBehaviour
         StartCoroutine(Shoot());
     }
 
-    // Update is called once per frame
     private void Update()
     {
         _accelerating = Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow);
@@ -41,8 +46,16 @@ public class PlayerHandler : MonoBehaviour
             _turnDirection = 0;
         }
 
-        if (Input.GetKey(KeyCode.Space))
+        if ((Input.GetKeyDown(KeyCode.S) || Input.GetKey(KeyCode.DownArrow)) && isShieldReady)
+        {
+            if (PlayerManager.playerManager.energy >= GameConfiguration.shieldEnergyCost)
+            {
+                PlayerManager.playerManager.UpdateEnergy(GameConfiguration.shieldEnergyCost);
+                StartCoroutine(ActiveShield());
+            }
+        }
 
+        if (Input.GetKey(KeyCode.Space))
             shootEnable = true;
         else
             shootEnable = false;
@@ -63,11 +76,11 @@ public class PlayerHandler : MonoBehaviour
     {
         while (true)
         {
-            if (shootEnable)
+            if (shootEnable && !_activeShield)
             {
-                GameObject bullet = Instantiate(bulletPrefab, bulletSpawnPoint.position, transform.rotation);
-                bullet.GetComponent<Bullet>().direction = transform.up;
-                yield return new WaitForSeconds(GameConfiguration.bulletCD);
+                Bullet bullet = Instantiate(bulletPrefab, bulletSpawnPoint.position, transform.rotation).GetComponent<Bullet>();
+                bullet.direction = transform.up;
+                yield return new WaitForSeconds(GameConfiguration.machineGunCD);
             }
             else
             {
@@ -76,9 +89,26 @@ public class PlayerHandler : MonoBehaviour
         }
     }
 
+    private IEnumerator ActiveShield()
+    {
+        _activeShield = true;
+        shield.SetActive(true);
+        StartCoroutine(ShieldReady());
+        yield return new WaitForSeconds(GameConfiguration.shieldLifeTime);
+        _activeShield = false;
+        shield.SetActive(false);
+    }
+
+    private IEnumerator ShieldReady()
+    {
+        isShieldReady = false;
+        yield return new WaitForSeconds(GameConfiguration.shieldCD);
+        isShieldReady = true;
+    }
+
     public void Beaten()
     {
-        PlayerManager.player.PlayerBeaten();
+        PlayerManager.playerManager.PlayerBeaten();
         Destroy(gameObject);
     }
 }

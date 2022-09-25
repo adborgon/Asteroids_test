@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class AsteroidManager : MonoBehaviour
 {
+    public static AsteroidManager asteroidManager { get; private set; }
+
     // Start is called before the first frame update
     public GameObject asteroidPrefab;
 
@@ -12,7 +14,12 @@ public class AsteroidManager : MonoBehaviour
 
     public float rotationOffeset = 30;
 
-    private void OnEnable()
+    private void Awake()
+    {
+        asteroidManager = this;
+    }
+
+    public void InitAsteroidGenerator()
     {
         StartCoroutine(AsteroidGenerator());
     }
