@@ -5,10 +5,10 @@ using UnityEngine;
 public static class GameConfiguration
 {
     public static string titleCanvas = "Asteroids";
-    public static string subtitleCanvas = "Press Spacebar to start";
+    public static string subtitleCanvas = "Press R to start";
     public static string finishCanvas = "Game Over";
     public static string subFinishCanvas = "Score: ";
-    public static string subFinishCanvasEnd = "\n Press Spacebar to restart";
+    public static string subFinishCanvasEnd = "\n Press R to restart";
 
     //Player
 
@@ -19,15 +19,9 @@ public static class GameConfiguration
 
     //Machine Gun settings
 
-    public static float machineGunSpeed = 2000;
-    public static float machineGunLifeTime = 1.5f;
-    public static float machineGunCD = 0.2f;
-
-    //Enemy Bomb settings
-
-    public static float enemyBombSpeed = 2000;
-    public static float enemyBombLifeTime = 1.5f;
-    public static float enemyBombCD = 0.2f;
+    public static float machineGunSpeed = 500;
+    public static float machineGunLifeTime = 1f;
+    public static float machineGunCD = 0.16f;
 
     //asteroid settings
 
@@ -41,8 +35,14 @@ public static class GameConfiguration
 
     //Enemy settings
 
-    public static int enemyMaxNumber = 3;
+    public static int enemyMaxNumber = 1;
     public static int enemySpeed = 30;
     public static float enemyCD = 5f;
     public static int enemyLifeTime = 30;
+
+    //Enemy Bomb settings
+
+    public static float enemyBombSpeed = 15;
+    public static float enemyBombLifeTime = 4.5f;
+    public static float enemyBombCD = 5f;
 }

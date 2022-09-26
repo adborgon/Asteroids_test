@@ -9,7 +9,7 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && !_gameStarted)
+        if (Input.GetKeyDown(KeyCode.R) && !_gameStarted)
         {
             _gameStarted = true;
             InfoHandler.infoHandler.HideText();

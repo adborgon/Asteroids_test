@@ -37,7 +37,7 @@ public class EnemyHandler : MonoBehaviour
             if (PlayerManager.playerManager.player)
             {
                 GameObject bullet = Instantiate(bulletPrefab, transform.position, transform.rotation);
-                bullet.GetComponent<Bullet>().direction = PlayerManager.playerManager.player.transform.position;
+                bullet.GetComponent<Bullet>().direction = PlayerManager.playerManager.player.transform.position - transform.position; //Vector between player and enemy
             }
         }
     }
