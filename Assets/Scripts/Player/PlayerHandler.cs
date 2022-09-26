@@ -84,6 +84,7 @@ public class PlayerHandler : MonoBehaviour
         {
             if (shootEnable && !_activeShield)
             {
+                GetComponent<AudioSource>().Play();
                 Bullet bullet = Instantiate(bulletPrefab, bulletSpawnPoint.position, transform.rotation).GetComponent<Bullet>();
                 bullet.direction = transform.up;
                 yield return new WaitForSeconds(GameConfiguration.machineGunCD);

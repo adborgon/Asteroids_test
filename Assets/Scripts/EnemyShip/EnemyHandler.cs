@@ -38,6 +38,7 @@ public class EnemyHandler : MonoBehaviour
             yield return new WaitForSeconds(GameConfiguration.enemyBombCD);
             if (PlayerManager.playerManager.player)
             {
+                GetComponent<AudioSource>().Play();
                 GameObject bullet = Instantiate(bulletPrefab, transform.position, transform.rotation);
                 bullet.GetComponent<Bullet>().direction = PlayerManager.playerManager.player.transform.position - transform.position; //Vector between player and enemy
             }

@@ -20,8 +20,8 @@ public static class GameConfiguration
 
     //Machine Gun settings
 
-    public static float machineGunSpeed = 500;
-    public static float machineGunLifeTime = 1f;
+    public static float machineGunSpeed = 400;
+    public static float machineGunLifeTime = 0.85f;
     public static float machineGunCD = 0.16f;
 
     //asteroid settings
