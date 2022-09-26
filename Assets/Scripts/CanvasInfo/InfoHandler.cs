@@ -7,7 +7,7 @@ public class InfoHandler : MonoBehaviour
     public static InfoHandler infoHandler { get; private set; }
 
     public TMPro.TMP_Text title, subtitle;
-    public GameObject Info;
+    public GameObject info, instructions;
 
     private void Awake()
     {
@@ -18,18 +18,20 @@ public class InfoHandler : MonoBehaviour
     {
         title.text = GameConfiguration.titleCanvas;
         subtitle.text = GameConfiguration.subtitleCanvas;
-        Info.SetActive(true);
+        info.SetActive(true);
+        instructions.SetActive(true);
     }
 
     public void ShowFinish(int score)
     {
         title.text = GameConfiguration.finishCanvas;
         subtitle.text = GameConfiguration.subFinishCanvas + score + GameConfiguration.subFinishCanvasEnd;
-        Info.SetActive(true);
+        info.SetActive(true);
     }
 
     public void HideText()
     {
-        Info.SetActive(false);
+        info.SetActive(false);
+        instructions.SetActive(false);
     }
 }

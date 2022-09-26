@@ -52,8 +52,12 @@ public class Bullet : MonoBehaviour
             switch (collision.tag)
             {
                 case "Asteroid":
-                case "Player":
                 case "Shield":
+                    Destroy(gameObject);
+                    break;
+
+                case "Player":
+                    collision.SendMessage("Beaten");
                     Destroy(gameObject);
                     break;
 

@@ -13,7 +13,9 @@ public class PlayerHandler : MonoBehaviour
 
     //shield
 
-    public GameObject shield;
+    [SerializeField] private GameObject shield;
+    [SerializeField] private GameObject explosion;
+
     private bool _activeShield = false;
     private bool isShieldReady = true;
 
@@ -22,15 +24,19 @@ public class PlayerHandler : MonoBehaviour
     //player statistics
     public float accelSpeed, turnSpeed;
 
+    private bool died = false;
+
     // Start is called before the first frame update
     private void Start()
     {
         _rigidbody = GetComponent<Rigidbody2D>();
         StartCoroutine(Shoot());
+        StartCoroutine(Invulnerable());
     }
 
     private void Update()
     {
+        if (died) return;
         _accelerating = Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow);
 
         if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
@@ -89,14 +95,25 @@ public class PlayerHandler : MonoBehaviour
         }
     }
 
+    private IEnumerator Invulnerable()
+    {
+        GetComponent<BoxCollider2D>().enabled = false;
+        GetComponent<Animator>().SetBool("Invulnerable", true);
+        yield return new WaitForSeconds(GameConfiguration.respawnInvulnerability);
+        GetComponent<BoxCollider2D>().enabled = true;
+        GetComponent<Animator>().SetBool("Invulnerable", false);
+    }
+
     private IEnumerator ActiveShield()
     {
+        GetComponent<BoxCollider2D>().enabled = false;
         _activeShield = true;
         shield.SetActive(true);
         StartCoroutine(ShieldReady());
         yield return new WaitForSeconds(GameConfiguration.shieldLifeTime);
         _activeShield = false;
         shield.SetActive(false);
+        GetComponent<BoxCollider2D>().enabled = true;
     }
 
     private IEnumerator ShieldReady()
@@ -108,7 +125,11 @@ public class PlayerHandler : MonoBehaviour
 
     public void Beaten()
     {
+        died = true;
         PlayerManager.playerManager.PlayerBeaten();
-        Destroy(gameObject);
+        explosion.SetActive(true);
+        GetComponent<BoxCollider2D>().enabled = false;
+        GetComponent<SpriteRenderer>().enabled = false;
+        Destroy(gameObject, 1);
     }
 }

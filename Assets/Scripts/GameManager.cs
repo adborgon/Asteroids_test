@@ -18,16 +18,15 @@ public class GameManager : MonoBehaviour
             AsteroidManager.asteroidManager.InitAsteroidGenerator();
             EnemyManager.enemyManager.InitEnemyGenerator();
         }
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Application.Quit();
+        }
     }
 
     public void ResetGame()
     {
-        /*PlayerManager.player.health = 3;
-        PlayerManager.player.score = 0;
-        InfoHandler.infoHandler.ShowIntro();
-        GUIHandler.guiHandler.HideGUI();
-        _gameStarted = false;*/
-
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }

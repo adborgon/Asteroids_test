@@ -45,12 +45,16 @@ public class AsteroidHandler : MonoBehaviour
 
             case "Shield":
                 asteroid.health = 0;
-                CheckAsteroidStatus();
+                CheckAsteroidStatus(givePoints: true);
                 break;
 
             case "Bullet":
                 asteroid.health--;
-                CheckAsteroidStatus();
+                if (collision.gameObject.GetComponent<Bullet>().bulletChoose == Bullet.BulletType.enemy)
+                    CheckAsteroidStatus(givePoints: false);
+                else
+                    CheckAsteroidStatus(givePoints: true);
+
                 break;
 
             default:
@@ -58,7 +62,7 @@ public class AsteroidHandler : MonoBehaviour
         }
     }
 
-    private void CheckAsteroidStatus()
+    private void CheckAsteroidStatus(bool givePoints)
     {
         if (!_asteroidManager) return;
         if (asteroid.health <= 0)
@@ -68,7 +72,7 @@ public class AsteroidHandler : MonoBehaviour
                 InstantiateAsteroidAfterDestruction();
                 InstantiateAsteroidAfterDestruction();
             }
-            PlayerManager.playerManager.UpdateScore(100 * ((int)asteroid.size + 1));
+            if (givePoints) PlayerManager.playerManager.UpdateScore(GameConfiguration.asteroidPointsRelatedWithSize * ((int)asteroid.size + 1));
             Destroy(gameObject);
         }
     }

@@ -7,6 +7,7 @@ public class EnemyHandler : MonoBehaviour
     private Rigidbody2D _rigidbody;
     public Enemy asteroid = new Enemy();
     public GameObject bulletPrefab;
+    public GameObject exclamation;
     private EnemyManager _enemyManager;
     private float _accelerationTime = 2f;
     private float _timeLeftToAccelerate;
@@ -16,6 +17,7 @@ public class EnemyHandler : MonoBehaviour
         _enemyManager = enemyManager;
         _rigidbody = GetComponent<Rigidbody2D>();
         StartCoroutine(Shoot());
+        StartCoroutine(HideExclamation());
         Destroy(gameObject, GameConfiguration.enemyLifeTime);
     }
 
@@ -42,6 +44,12 @@ public class EnemyHandler : MonoBehaviour
         }
     }
 
+    private IEnumerator HideExclamation()
+    {
+        yield return new WaitForSeconds(2);
+        exclamation.SetActive(false);
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         switch (collision.tag)
@@ -51,11 +59,13 @@ public class EnemyHandler : MonoBehaviour
                 break;
 
             case "Shield":
+                PlayerManager.playerManager.UpdateScore(GameConfiguration.enemyPoints);
                 Destroy(gameObject);
                 break;
 
             case "Bullet":
                 if (collision.gameObject.GetComponent<Bullet>().bulletChoose == Bullet.BulletType.enemy) return;
+                PlayerManager.playerManager.UpdateScore(GameConfiguration.enemyPoints);
                 Destroy(gameObject);
                 break;
 

@@ -16,7 +16,7 @@ public class PlayerManager : MonoBehaviour
     [SerializeField]
     private GameObject playerPrebaf;
 
-    public bool gameFinished = false;
+    private bool _gameFinished = false;
 
     private void Awake()
     {
@@ -25,7 +25,7 @@ public class PlayerManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && gameFinished)
+        if (Input.GetKeyDown(KeyCode.R) && _gameFinished)
         {
             GetComponent<GameManager>().ResetGame();
         }
@@ -50,7 +50,7 @@ public class PlayerManager : MonoBehaviour
         if (health <= 0)
         {
             Debug.Log("Game Over");
-            gameFinished = true;
+            _gameFinished = true;
             GUIHandler.guiHandler.HideGUI();
             InfoHandler.infoHandler.ShowFinish(score);
         }

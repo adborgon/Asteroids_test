@@ -58,6 +58,10 @@ public class BoundarySetter : MonoBehaviour
                 col.transform.position = ReversePosition(boundaryPosition, col.transform);
                 break;
 
+            case "Shield":
+                col.transform.parent.transform.position = ReversePosition(boundaryPosition, col.transform);
+                break;
+
             default:
                 break;
         }
