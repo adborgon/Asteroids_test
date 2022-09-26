@@ -5,11 +5,11 @@ using UnityEngine;
 public class EnemyManager : MonoBehaviour
 {
     public static EnemyManager enemyManager { get; private set; }
-    public GameObject enemyPrefab;
-    public BoundarySetter[] spawnList;
-    public List<EnemyHandler> enemiesActive;
 
-    private float offset = 5;
+    [SerializeField] private GameObject _enemyPrefab;
+    public BoundarySetter[] spawnList;
+    private List<EnemyHandler> _enemiesActive = new List<EnemyHandler>();
+    private readonly float _spaenOffset = 5;
 
     private void Awake()
     {
@@ -25,12 +25,12 @@ public class EnemyManager : MonoBehaviour
     {
         while (true)
         {
-            if (enemiesActive.Count < GameConfiguration.enemyMaxNumber)
+            if (_enemiesActive.Count < GameConfiguration.enemyMaxNumber)
             {
                 yield return new WaitForSeconds(GameConfiguration.enemyCD);
-                Vector3 pointSelected = SpawnPoint();
-                EnemyHandler enemy = Instantiate(enemyPrefab, pointSelected, Quaternion.identity).GetComponent<EnemyHandler>();
-                enemiesActive.Add(enemy);
+                Vector3 pointSelected = GetSpawnPoint();
+                EnemyHandler enemy = Instantiate(_enemyPrefab, pointSelected, Quaternion.identity).GetComponent<EnemyHandler>();
+                _enemiesActive.Add(enemy);
                 enemy.InitEnemy(this);
             }
             else
@@ -40,25 +40,30 @@ public class EnemyManager : MonoBehaviour
         }
     }
 
-    private Vector3 SpawnPoint()
+    private Vector3 GetSpawnPoint()
     {
         BoundarySetter boundaryRelation = spawnList[Random.Range(0, spawnList.Length)];
         switch (boundaryRelation.boundaryPosition)
         {
             case BoundarySetter.Position.top:
-                return boundaryRelation.transform.position + Vector3.down * offset;
+                return boundaryRelation.transform.position + Vector3.down * _spaenOffset;
 
             case BoundarySetter.Position.left:
-                return boundaryRelation.transform.position + Vector3.right * offset;
+                return boundaryRelation.transform.position + Vector3.right * _spaenOffset;
 
             case BoundarySetter.Position.right:
-                return boundaryRelation.transform.position + Vector3.left * offset;
+                return boundaryRelation.transform.position + Vector3.left * _spaenOffset;
 
             case BoundarySetter.Position.bottom:
-                return boundaryRelation.transform.position + Vector3.up * offset;
+                return boundaryRelation.transform.position + Vector3.up * _spaenOffset;
 
             default:
                 return Vector3.zero;
         }
+    }
+
+    public void RemoveEnemyFromList(EnemyHandler enemy)
+    {
+        _enemiesActive.Remove(enemy);
     }
 }

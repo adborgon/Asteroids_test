@@ -7,11 +7,8 @@ public class PlayerManager : MonoBehaviour
     //singleton
     public static PlayerManager playerManager { get; private set; }
 
-    public int health = 3;
-    public int score;
-    public int energy = 100;
-
-    public GameObject player;
+    public Player player;
+    public GameObject playerShip;
 
     [SerializeField]
     private GameObject playerPrebaf;
@@ -21,6 +18,7 @@ public class PlayerManager : MonoBehaviour
     private void Awake()
     {
         playerManager = this;
+        player = new Player();
     }
 
     private void Update()
@@ -33,26 +31,26 @@ public class PlayerManager : MonoBehaviour
 
     public void UpdateScore(int pointsToIncrease)
     {
-        score += pointsToIncrease;
-        GUIHandler.guiHandler.UpdateScore(score);
+        player.score += pointsToIncrease;
+        GUIHandler.guiHandler.UpdateScore(player.score);
     }
 
     public void UpdateEnergy(int energyToDecrease)
     {
-        energy -= energyToDecrease;
-        GUIHandler.guiHandler.UpdateEnergy(energy);
+        player.energy -= energyToDecrease;
+        GUIHandler.guiHandler.UpdateEnergy(player.energy);
     }
 
     public void PlayerBeaten()
     {
-        health--;
-        GUIHandler.guiHandler.UpdateLife(health);
-        if (health <= 0)
+        player.health--;
+        GUIHandler.guiHandler.UpdateLife(player.health);
+        if (player.health <= 0)
         {
             Debug.Log("Game Over");
             _gameFinished = true;
             GUIHandler.guiHandler.HideGUI();
-            InfoHandler.infoHandler.ShowFinish(score);
+            InfoHandler.infoHandler.ShowFinish(player.score);
         }
         else
         {
@@ -62,6 +60,6 @@ public class PlayerManager : MonoBehaviour
 
     public void PlayerSpawn()
     {
-        player = Instantiate(playerPrebaf, Vector3.zero, Quaternion.identity);
+        playerShip = Instantiate(playerPrebaf, Vector3.zero, Quaternion.identity);
     }
 }

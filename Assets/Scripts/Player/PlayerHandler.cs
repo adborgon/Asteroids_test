@@ -9,22 +9,20 @@ public class PlayerHandler : MonoBehaviour
     private Rigidbody2D _rigidbody;
 
     //prefabs
-    public GameObject bulletPrefab;
+    [SerializeField] private GameObject bulletPrefab;
 
-    //shield
+    public Transform bulletSpawnPoint;
+
+    //Shield
 
     [SerializeField] private GameObject shield;
     [SerializeField] private GameObject explosion;
 
     private bool _activeShield = false;
-    private bool isShieldReady = true;
+    private bool _isShieldReady = true;
 
-    public Transform bulletSpawnPoint;
-
-    //player statistics
-    public float accelSpeed, turnSpeed;
-
-    private bool died = false;
+    private bool _died = false;
+    private bool _shootEnable;
 
     // Start is called before the first frame update
     private void Start()
@@ -36,14 +34,14 @@ public class PlayerHandler : MonoBehaviour
 
     private void Update()
     {
-        if (died) return;
-        _accelerating = Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow);
+        if (_died) return;
+        _accelerating = isPressUp();
 
-        if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
+        if (isPressLeft())
         {
             _turnDirection = 1;
         }
-        else if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
+        else if (isPressRight())
         {
             _turnDirection = -1;
         }
@@ -52,37 +50,35 @@ public class PlayerHandler : MonoBehaviour
             _turnDirection = 0;
         }
 
-        if ((Input.GetKeyDown(KeyCode.S) || Input.GetKey(KeyCode.DownArrow)) && isShieldReady)
+        if (isPressDown() && _isShieldReady)
         {
-            if (PlayerManager.playerManager.energy >= GameConfiguration.shieldEnergyCost)
+            if (PlayerManager.playerManager.player.energy >= GameConfiguration.shieldEnergyCost)
             {
                 PlayerManager.playerManager.UpdateEnergy(GameConfiguration.shieldEnergyCost);
                 StartCoroutine(ActiveShield());
             }
         }
 
-        if (Input.GetKey(KeyCode.Space))
-            shootEnable = true;
+        if (isShooting())
+            _shootEnable = true;
         else
-            shootEnable = false;
+            _shootEnable = false;
     }
 
     private void FixedUpdate()
     {
         if (_accelerating)
-            _rigidbody.AddForce(transform.up * accelSpeed);
+            _rigidbody.AddForce(transform.up * GameConfiguration.playerAccelSpeed);
 
         if (_turnDirection != 0)
-            _rigidbody.AddTorque(_turnDirection * turnSpeed);
+            _rigidbody.AddTorque(_turnDirection * GameConfiguration.playerTurnSpeed);
     }
-
-    private bool shootEnable;
 
     private IEnumerator Shoot()
     {
         while (true)
         {
-            if (shootEnable && !_activeShield)
+            if (_shootEnable && !_activeShield && !_died)
             {
                 GetComponent<AudioSource>().Play();
                 Bullet bullet = Instantiate(bulletPrefab, bulletSpawnPoint.position, transform.rotation).GetComponent<Bullet>();
@@ -119,18 +115,47 @@ public class PlayerHandler : MonoBehaviour
 
     private IEnumerator ShieldReady()
     {
-        isShieldReady = false;
+        _isShieldReady = false;
         yield return new WaitForSeconds(GameConfiguration.shieldCD);
-        isShieldReady = true;
+        _isShieldReady = true;
     }
 
     public void Beaten()
     {
-        died = true;
+        _died = true;
         PlayerManager.playerManager.PlayerBeaten();
         explosion.SetActive(true);
         GetComponent<BoxCollider2D>().enabled = false;
         GetComponent<SpriteRenderer>().enabled = false;
         Destroy(gameObject, 1);
     }
+
+    #region KeyHandler
+
+    private static bool isShooting()
+    {
+        return Input.GetKey(KeyCode.Space);
+    }
+
+    private static bool isPressDown()
+    {
+        return (Input.GetKeyDown(KeyCode.S) || Input.GetKey(KeyCode.DownArrow));
+    }
+
+    private static bool isPressRight()
+    {
+        return Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow);
+    }
+
+    private static bool isPressLeft()
+    {
+        return Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow);
+    }
+
+    private static bool isPressUp()
+    {
+        return Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow);
+    }
+
+    #endregion KeyHandler
 }

@@ -5,11 +5,10 @@ using UnityEngine;
 public class EnemyHandler : MonoBehaviour
 {
     private Rigidbody2D _rigidbody;
-    public Enemy asteroid = new Enemy();
-    public GameObject bulletPrefab;
-    public GameObject exclamation;
+    [SerializeField] private GameObject bulletPrefab;
+    [SerializeField] private GameObject exclamation;
     private EnemyManager _enemyManager;
-    private float _accelerationTime = 2f;
+    private readonly float _accelerationTime = 2f;
     private float _timeLeftToAccelerate;
 
     public void InitEnemy(EnemyManager enemyManager)
@@ -36,11 +35,11 @@ public class EnemyHandler : MonoBehaviour
         while (true)
         {
             yield return new WaitForSeconds(GameConfiguration.enemyBombCD);
-            if (PlayerManager.playerManager.player)
+            if (PlayerManager.playerManager.playerShip)
             {
                 GetComponent<AudioSource>().Play();
                 GameObject bullet = Instantiate(bulletPrefab, transform.position, transform.rotation);
-                bullet.GetComponent<Bullet>().direction = PlayerManager.playerManager.player.transform.position - transform.position; //Vector between player and enemy
+                bullet.GetComponent<Bullet>().direction = PlayerManager.playerManager.playerShip.transform.position - transform.position; //Vector between player and enemy
             }
         }
     }
@@ -78,6 +77,6 @@ public class EnemyHandler : MonoBehaviour
     private void OnDestroy()
     {
         if (!_enemyManager) return;
-        _enemyManager.enemiesActive.Remove(this);
+        _enemyManager.RemoveEnemyFromList(this);
     }
 }

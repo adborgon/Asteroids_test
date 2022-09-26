@@ -5,16 +5,18 @@ using UnityEngine;
 public class AsteroidHandler : MonoBehaviour
 {
     private Rigidbody2D _rigidbody;
-
-    public Asteroid asteroid = new Asteroid();
     private AsteroidManager _asteroidManager;
+    [SerializeField] private Asteroid asteroid = new Asteroid();
 
+    #region Init Asteroid
+
+    //Init instead Start due to instantiate problems, 1º init to AsteroidManager generator with random size, 2º to after destruction with specific size
     public void InitAsteroid(AsteroidManager asteroidManager)
     {
         _asteroidManager = asteroidManager;
         _rigidbody = GetComponent<Rigidbody2D>();
         asteroid.size = RandomeSize();
-        asteroid.initConfiguration(_rigidbody, transform);
+        asteroid.InitConfiguration(_rigidbody, transform);
     }
 
     public void InitAsteroid(AsteroidManager asteroidManager, Asteroid.Size size)
@@ -24,45 +26,20 @@ public class AsteroidHandler : MonoBehaviour
             _asteroidManager = asteroidManager;
             _rigidbody = GetComponent<Rigidbody2D>();
             asteroid.size = size - 1;
-            asteroid.initConfiguration(_rigidbody, transform);
+            asteroid.InitConfiguration(_rigidbody, transform);
         }
     }
 
-    public void Shoot(Vector2 direction)
+    #endregion Init Asteroid
+
+    public void Launch(Vector2 direction)
     {
         _rigidbody.AddTorque(asteroid.turnDirection * asteroid.turnSpeed);
         _rigidbody.AddForce(direction * GameConfiguration.asteroidSpeed);
         Destroy(gameObject, GameConfiguration.asteroidLifeTime);
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        switch (collision.tag)
-        {
-            case "Player":
-                collision.SendMessage("Beaten");
-                break;
-
-            case "Shield":
-                asteroid.health = 0;
-                CheckAsteroidStatus(givePoints: true);
-                break;
-
-            case "Bullet":
-                asteroid.health--;
-                if (collision.gameObject.GetComponent<Bullet>().bulletChoose == Bullet.BulletType.enemy)
-                    CheckAsteroidStatus(givePoints: false);
-                else
-                    CheckAsteroidStatus(givePoints: true);
-
-                break;
-
-            default:
-                break;
-        }
-    }
-
-    private void CheckAsteroidStatus(bool givePoints)
+    private void CheckHealthAndGivePoints(bool givePoints)
     {
         if (!_asteroidManager) return;
         if (asteroid.health <= 0)
@@ -81,7 +58,7 @@ public class AsteroidHandler : MonoBehaviour
     {
         AsteroidHandler newAsteroid = Instantiate(_asteroidManager.asteroidPrefab, transform.position, Quaternion.identity).GetComponent<AsteroidHandler>();
         newAsteroid.InitAsteroid(_asteroidManager, asteroid.size);
-        newAsteroid.Shoot(Quaternion.Euler(0, 0, Random.Range(0, 360)) * transform.right);
+        newAsteroid.Launch(Quaternion.Euler(0, 0, Random.Range(0, 360)) * transform.right);
     }
 
     /// <summary>
@@ -94,9 +71,36 @@ public class AsteroidHandler : MonoBehaviour
         return (Asteroid.Size)Random.Range(0, 3);
     }
 
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        switch (collision.tag)
+        {
+            case "Player":
+                collision.SendMessage("Beaten");
+                break;
+
+            case "Shield":
+                asteroid.health = 0;
+                CheckHealthAndGivePoints(givePoints: true);
+                break;
+
+            case "Bullet":
+                asteroid.health--;
+                if (collision.gameObject.GetComponent<Bullet>().bulletChoose == Bullet.BulletType.enemy)
+                    CheckHealthAndGivePoints(givePoints: false);
+                else
+                    CheckHealthAndGivePoints(givePoints: true);
+
+                break;
+
+            default:
+                break;
+        }
+    }
+
     private void OnDestroy()
     {
         if (!_asteroidManager) return;
-        _asteroidManager.asteroidsActive.Remove(this);
+        _asteroidManager.RemoveAsteroidFromList(this);
     }
 }

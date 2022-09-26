@@ -169,7 +169,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   boundaryPosition: 1
-  offset: 30
   pointSetter: {fileID: 1383429957}
 --- !u!61 &87183468
 BoxCollider2D:
@@ -267,7 +266,7 @@ Transform:
   - {fileID: 87183466}
   - {fileID: 509732916}
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &438049216
 GameObject:
@@ -451,7 +450,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   boundaryPosition: 2
-  offset: 30
   pointSetter: {fileID: 1733750647}
 --- !u!61 &509732918
 BoxCollider2D:
@@ -744,7 +742,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   boundaryPosition: 3
-  offset: 30
   pointSetter: {fileID: 1866038516}
 --- !u!61 &636165654
 BoxCollider2D:
@@ -870,7 +867,7 @@ RectTransform:
   - {fileID: 1455381340}
   - {fileID: 228750354}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -955,7 +952,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   boundaryPosition: 0
-  offset: 30
   pointSetter: {fileID: 2133180855}
 --- !u!61 &919646970
 BoxCollider2D:
@@ -1471,8 +1467,6 @@ MonoBehaviour:
   - {fileID: 1866038515}
   - {fileID: 1383429956}
   - {fileID: 1733750646}
-  asteroidsActive: []
-  rotationOffeset: 45
 --- !u!4 &1430144236
 Transform:
   m_ObjectHideFlags: 0
@@ -1500,10 +1494,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8edb0cc480e7ae346b85118b6f0135a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 3
-  score: 0
-  energy: 100
-  player: {fileID: 0}
+  player:
+    health: 3
+    score: 0
+    energy: 100
+  playerShip: {fileID: 0}
   playerPrebaf: {fileID: 154655091790409528, guid: 2795cd342b5d2f44eb171707896932ae, type: 3}
 --- !u!114 &1430144238
 MonoBehaviour:
@@ -1529,13 +1524,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 664106471da4d3041b30357246ff935e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyPrefab: {fileID: 7205044775308589070, guid: 309addd71ae9a29489d5552f8f98e125, type: 3}
+  _enemyPrefab: {fileID: 7205044775308589070, guid: 309addd71ae9a29489d5552f8f98e125, type: 3}
   spawnList:
   - {fileID: 919646969}
   - {fileID: 636165653}
   - {fileID: 87183467}
   - {fileID: 509732917}
-  enemiesActive: []
 --- !u!1 &1455381337
 GameObject:
   m_ObjectHideFlags: 0
@@ -1751,7 +1745,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1596777404
 GameObject:

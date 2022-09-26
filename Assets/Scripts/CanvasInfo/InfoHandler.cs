@@ -6,8 +6,8 @@ public class InfoHandler : MonoBehaviour
 {
     public static InfoHandler infoHandler { get; private set; }
 
-    public TMPro.TMP_Text title, subtitle;
-    public GameObject info, instructions;
+    [SerializeField] private TMPro.TMP_Text title, subtitle;
+    [SerializeField] private GameObject info, instructions;
 
     private void Awake()
     {

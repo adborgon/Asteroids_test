@@ -6,8 +6,8 @@ public class GUIHandler : MonoBehaviour
 {
     public static GUIHandler guiHandler { get; private set; }
 
-    public TMPro.TMP_Text txt_health, txt_score, txt_energy;
-    public GameObject GUI;
+    [SerializeField] private TMPro.TMP_Text txt_health, txt_score, txt_energy;
+    [SerializeField] private GameObject GUI;
 
     private void Awake()
     {
@@ -21,13 +21,11 @@ public class GUIHandler : MonoBehaviour
 
     public void UpdateScore(int score)
     {
-        //Podríamos hacer una animación
         txt_score.text = score.ToString();
     }
 
     public void UpdateEnergy(int energy)
     {
-        //Podríamos hacer una animación
         txt_energy.text = energy.ToString();
     }
 

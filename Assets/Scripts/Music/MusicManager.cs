@@ -6,7 +6,6 @@ public class MusicManager : MonoBehaviour
 {
     private static MusicManager manager;
 
-    // Start is called before the first frame update
     private void Awake()
     {
         if (manager == null)

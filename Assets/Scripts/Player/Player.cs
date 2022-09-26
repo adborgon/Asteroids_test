@@ -6,11 +6,7 @@ using UnityEngine;
 [Serializable]
 public class Player
 {
-    public int health;
-    public int points;
-
-    public Player()
-    {
-        this.health = 3;
-    }
+    public int health = GameConfiguration.playerMaxHealth;
+    public int score;
+    public int energy = GameConfiguration.playerMaxEnery;
 }

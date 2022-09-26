@@ -10,9 +10,9 @@ public class BoundarySetter : MonoBehaviour
     }
 
     public Position boundaryPosition;
-    public float offset;
-
     public SpawnPointSetter pointSetter;
+
+    private readonly float offset = 30;
 
     private void Update()
     {
@@ -44,10 +44,6 @@ public class BoundarySetter : MonoBehaviour
         pointSetter.SetPosition(this);
     }
 
-    /// <summary>
-    /// Collision detected on the boundaries
-    /// </summary>
-    /// <param name="collider"></param>
     private void OnTriggerEnter2D(Collider2D col)
     {
         switch (col.tag)

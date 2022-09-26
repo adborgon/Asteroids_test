@@ -13,12 +13,17 @@ public static class GameConfiguration
     //Player
 
     public static float playerCD = 3f;
+    public static float playerAccelSpeed = 12f;
+    public static float playerTurnSpeed = 15f;
+    public static float respawnInvulnerability = 3f;
+    public static int playerMaxHealth = 3;
+    public static int playerMaxEnery = 100;
+
     public static float shieldCD = 10f;
     public static float shieldLifeTime = 4f;
     public static int shieldEnergyCost = 20;
-    public static float respawnInvulnerability = 3f;
 
-    //Machine Gun settings
+    //Machine Gun Player settings
 
     public static float machineGunSpeed = 400;
     public static float machineGunLifeTime = 0.85f;
@@ -26,10 +31,10 @@ public static class GameConfiguration
 
     //asteroid settings
 
-    public static int asteroidMaxNumber = 25;
-    public static int asteroidSpeed = 300;
+    public static int asteroidMaxNumber = 15;
+    public static int asteroidSpeed = 150;
     public static float asteroidCD = 0.75f;
-    public static int asteroidLifeTime = 8;
+    public static int asteroidLifeTime = 15;
     public static int asteroidPointsRelatedWithSize = 100;
     public static float[] asteroidScaleRelationSize = new float[] { 0.3f, 0.7f, 1f };
     public static int[] asteroidHealthRelationSize = new int[] { 1, 2, 3 };
@@ -39,13 +44,13 @@ public static class GameConfiguration
 
     public static int enemyMaxNumber = 1;
     public static int enemySpeed = 30;
-    public static float enemyCD = 5f;
-    public static int enemyLifeTime = 30;
+    public static float enemyCD = 15f;
+    public static int enemyLifeTime = 50;
     public static int enemyPoints = 400;
 
     //Enemy Bomb settings
 
     public static float enemyBombSpeed = 15;
     public static float enemyBombLifeTime = 4.5f;
-    public static float enemyBombCD = 5f;
+    public static float enemyBombCD = 10f;
 }
